@@ -163,7 +163,7 @@ nav a:hover { color: #1a1a1a; }
 }
 .sidebar-item.active {
   background: var(--accent-light);
-  color: var(--accent-dark);
+  /* color: var(--accent-dark);*/
   font-weight: 500;
 }
 .sidebar-item i { font-size: 15px; }

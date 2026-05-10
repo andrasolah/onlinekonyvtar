@@ -174,13 +174,15 @@ function showView(v) {
 
 function filterCat(el, cat) {
   catFilter = cat;
-  document.querySelectorAll('.sidebar-item').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active'));
   el.classList.add('active');
   renderGrids();
 }
 
 function filterAvail(el, val) {
   availFilter = val;
+  document.querySelectorAll('.avail-item').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
   renderGrids();
 }
 
