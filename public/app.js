@@ -220,6 +220,8 @@ async function doLogin() {
   document.getElementById('loginBtn').style.display = 'none';
   document.getElementById('registerBtn').style.display = 'none';
   document.getElementById('logoutBtn').style.display = 'inline-block';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPass').value = '';
   closeModal('loginModal');
   renderLoans();
 }

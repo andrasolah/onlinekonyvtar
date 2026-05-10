@@ -30,3 +30,11 @@ INSERT INTO books (title, author, isbn) VALUES
   ('The Pragmatic Programmer', 'David Thomas', '9780201616224'),
   ('Design Patterns', 'Gang of Four', '9780201633610')
 ON CONFLICT DO NOTHING;
+
+-- Teszt felhasználók
+-- user1 / password123
+-- user2 / password456
+INSERT INTO users (username, email, password_hash) VALUES
+  ('user1', 'user1@example.com', '$2b$10$QFVJuhh.xu8.3iKzrqvHHufnhoWHIUw6G5ZxhKtx4eW3VbIwu/PnO'),
+  ('user2', 'user2@example.com', '$2b$10$TyBKuWW8kcJrBYswhONSl.hSsSLdqGJ5niV6kskH9/unGla6jZUrW')
+ON CONFLICT DO NOTHING;

@@ -137,3 +137,18 @@ init.sql           # Adatbázis séma és seed adatok
 
 ```
 
+\## Teszt felhasználók
+```
+-- Teszt felhasználók
+-- user1@example.com / password123
+-- user2@example.com / password456
+```
+
+
+\## Validációs és integrációs tesztek
+```
+docker compose exec app npm test
+auth.test.js – validációs teszt. Nem indít valódi HTTP kérést a szerver felé, csak az express-validator validációs logikáját teszteli. Adatbázis-kapcsolat nélkül is lefut.
+books.test.js – integrációs teszt. A Supertest HTTP kérést küld az Express app felé, ami csatlakozik az adatbázishoz és visszaadja az adatokat. Futó adatbázis szükséges hozzá.
+```
+
