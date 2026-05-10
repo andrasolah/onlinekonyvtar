@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Könyvtár</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">könyv<span>tár</span></div>
+  <div class="search-wrap">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="text" placeholder="Keresés cím, szerző alapján..." id="searchInput">
+  </div>
+  <div class="nav-actions">
+    <span id="userGreeting"></span>
+    <button class="btn" id="loginBtn" onclick="openModal('loginModal')">Belépés</button>
+    <button class="btn" id="registerBtn" onclick="openModal('registerModal')">Regisztráció</button>
+    <button class="btn btn-primary" id="logoutBtn" style="display:none" onclick="logout()">Kilépés</button>
+  </div>
+</header>
+
+<nav>
+  <a class="active" onclick="showView('home')">Kezdőlap</a>
+  <a onclick="showView('books')">Online könyvtár</a>
+  <a onclick="showView('loans')">Kölcsönzéseim</a>
+  <a onclick="showView('about')">Rólunk</a>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h3>Kategóriák</h3>
+    <div class="sidebar-item active" onclick="filterCat(this,'all')"><i class="ti ti-books" aria-hidden="true"></i>Összes</div>
+    <div class="sidebar-item" onclick="filterCat(this,'prog')"><i class="ti ti-code" aria-hidden="true"></i>Programozás</div>
+    <div class="sidebar-item" onclick="filterCat(this,'design')"><i class="ti ti-palette" aria-hidden="true"></i>Design</div>
+    <div class="sidebar-item" onclick="filterCat(this,'sci')"><i class="ti ti-microscope" aria-hidden="true"></i>Tudomány</div>
+    <div class="sidebar-item" onclick="filterCat(this,'novel')"><i class="ti ti-feather" aria-hidden="true"></i>Szépirodalom</div>
+    <div style="margin-top:16px"></div>
+    <h3>Elérhetőség</h3>
+    <div class="sidebar-item" onclick="filterAvail(this,null)"><i class="ti ti-list" aria-hidden="true"></i>Mind</div>
+    <div class="sidebar-item" onclick="filterAvail(this,true)"><i class="ti ti-circle-check" aria-hidden="true"></i>Szabad</div>
+    <div class="sidebar-item" onclick="filterAvail(this,false)"><i class="ti ti-clock" aria-hidden="true"></i>Kölcsönzött</div>
+  </aside>
+
+  <main class="main" id="mainContent">
+    <div class="books-view" id="homeView">
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Üdvözöl az online könyvtár</h2>
+          <p>Böngéssz több száz könyv között, kölcsönözz egyszerűen,<br>kövesd nyomon aktív kölcsönzéseidet.</p>
+          <button class="btn btn-primary" onclick="showView('books')">Könyvek böngészése</button>
+        </div>
+        <div class="hero-img"><i class="ti ti-books" aria-hidden="true"></i></div>
+      </div>
+      <div>
+        <div class="section-title">Legújabb könyvek <a onclick="showView('books')">Összes →</a></div>
+        <div class="books-grid" id="homeGrid"></div>
+      </div>
+    </div>
+
+    <div class="books-view hidden" id="booksView">
+      <div class="section-title">Könyvtár <span id="bookCount"></span></div>
+      <div class="books-grid" id="mainGrid"></div>
+    </div>
+
+    <div class="books-view hidden" id="loansView">
+      <div class="section-title">Aktív kölcsönzéseim</div>
+      <div id="loansContent"></div>
+    </div>
+
+    <div class="books-view hidden" id="aboutView">
+      <h2>Rólunk</h2>
+      <p>Az online könyvtár egy webalkalmazás, amely lehetővé teszi könyvek keresését, böngészését és kölcsönzését. A rendszer REST API-n keresztül kommunikál a backenddel, JWT-alapú hitelesítést alkalmaz, és PostgreSQL adatbázisban tárolja az adatokat.</p>
+    </div>
+  </main>
+
+  <aside class="right-panel">
+    <div class="panel-card">
+      <h3><i class="ti ti-clock" aria-hidden="true"></i>Aktív kölcsönzések</h3>
+      <div id="sideLoans"></div>
+    </div>
+    <div class="panel-card">
+      <h3><i class="ti ti-link" aria-hidden="true"></i>Hasznos linkek</h3>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://developer.mozilla.org" target="_blank">MDN Docs</a></div>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://expressjs.com" target="_blank">Express.js</a></div>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://orm.drizzle.team" target="_blank">Drizzle ORM</a></div>
+    </div>
+  </aside>
+</div>
+
+<!-- Login modal -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <h2>Belépés</h2>
+    <label>Email</label>
+    <input type="email" id="loginEmail" placeholder="email@example.com">
+    <label>Jelszó</label>
+    <input type="password" id="loginPass" placeholder="Jelszó">
+    <div id="loginError" class="form-error"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('loginModal')">Mégse</button>
+      <button class="btn btn-primary" onclick="doLogin()">Belépés</button>
+    </div>
+  </div>
+</div>
+
+<!-- Register modal -->
+<div class="modal-bg" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <h2>Regisztráció</h2>
+    <label>Felhasználónév</label>
+    <input type="text" id="regUser" placeholder="Felhasználónév">
+    <label>Email</label>
+    <input type="email" id="regEmail" placeholder="email@example.com">
+    <label>Jelszó</label>
+    <input type="password" id="regPass" placeholder="Min. 6 karakter">
+    <div id="regError" class="form-error"></div>
+    <div id="regSuccess" class="form-success"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('registerModal')">Mégse</button>
+      <button class="btn btn-primary" onclick="doRegister()">Regisztráció</button>
+    </div>
+  </div>
+</div>
+
+<!-- Book detail modal -->
+<div class="modal-bg" id="bookModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('bookModal')"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div id="bookModalContent"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
