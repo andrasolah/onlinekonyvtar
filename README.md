@@ -38,7 +38,10 @@ Webalkalmazás könyvek böngészésére és kölcsönzésére.
 
 cp .env.example .env
 
-docker compose up --build
+Az azonnali build lehetőségért a .env most része a repositorynak.
+
+tiszta indítás:
+docker compose down -v && docker compose up --build
 
 ```
 
