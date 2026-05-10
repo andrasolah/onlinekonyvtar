@@ -329,6 +329,19 @@ nav a:hover { color: #1a1a1a; }
 .ext-link i { font-size: 14px; color: var(--accent); }
 .ext-link a { color: var(--accent); text-decoration: none; }
 .ext-link a:hover { text-decoration: underline; }
+/* Content card */
+.content-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.content-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.7;
+}
 
 /* Modals */
 .modal-bg {

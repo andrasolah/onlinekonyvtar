@@ -161,15 +161,17 @@ function renderLoans() {
 }
 
 function showView(v) {
-  ['homeView', 'booksView', 'loansView', 'aboutView'].forEach(id => {
-    document.getElementById(id).classList.add('hidden');
-  });
+  ['homeView', 'booksView', 'loansView', 'aboutView', 'blogView', 'faqView']
+    .forEach(id => document.getElementById(id).classList.add('hidden'));
   document.getElementById(v + 'View').classList.remove('hidden');
   document.querySelectorAll('nav a').forEach((a, i) => {
     a.classList.remove('active');
-    if (['home', 'books', 'loans', 'about'][i] === v) a.classList.add('active');
+    if (['home', 'books', 'loans', 'about', 'blog', 'faq'][i] === v) a.classList.add('active');
   });
   if (v === 'loans') renderLoans();
+
+  document.getElementById('homeSidebar').style.display = ['home', 'loans', 'about', 'blog', 'faq'].includes(v) ? 'block' : 'none';
+  document.getElementById('booksSidebar').style.display = v === 'books' ? 'block' : 'none';
 }
 
 function filterCat(el, cat) {

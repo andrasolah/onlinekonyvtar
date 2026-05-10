@@ -30,7 +30,27 @@
 </nav>
 
 <div class="layout">
-  <aside class="sidebar">
+
+  <aside class="sidebar" id="homeSidebar">
+  <h3>Szolgáltatások</h3>
+  <div class="sidebar-item" onclick="showView('books')">
+    <i class="ti ti-books"></i>Katalógus
+  </div>
+  <div class="sidebar-item" onclick="showView('loans')">
+    <i class="ti ti-clock"></i>Kölcsönzéseim
+  </div>
+
+  <div style="margin-top:16px"></div>
+  <h3>Információk</h3>
+  <div class="sidebar-item" onclick="showView('blog')">
+    <i class="ti ti-news"></i>Blog
+  </div>
+  <div class="sidebar-item" onclick="showView('faq')">
+    <i class="ti ti-help"></i>FAQ
+  </div>
+</aside>
+
+  <aside class="sidebar" id="booksSidebar" style="display:none">
     <h3>Kategóriák</h3>
     <div class="sidebar-item cat-item active" onclick="filterCat(this,'all')"><i class="ti ti-books" aria-hidden="true"></i>Összes</div>
     <div class="sidebar-item cat-item" onclick="filterCat(this,'prog')"><i class="ti ti-code" aria-hidden="true"></i>Programozás</div>
@@ -39,7 +59,7 @@
     <div class="sidebar-item cat-item" onclick="filterCat(this,'novel')"><i class="ti ti-feather" aria-hidden="true"></i>Szépirodalom</div>
     <div style="margin-top:16px"></div>
     <h3>Elérhetőség</h3>
-    <div class="sidebar-item avail-item" onclick="filterAvail(this,null)"><i class="ti ti-list" aria-hidden="true"></i>Mind</div>
+    <div class="sidebar-item avail-item active" onclick="filterAvail(this,null)"><i class="ti ti-list" aria-hidden="true"></i>Mind</div>
     <div class="sidebar-item avail-item" onclick="filterAvail(this,true)"><i class="ti ti-circle-check" aria-hidden="true"></i>Szabad</div>
     <div class="sidebar-item avail-item" onclick="filterAvail(this,false)"><i class="ti ti-clock" aria-hidden="true"></i>Kölcsönzött</div>
   </aside>
@@ -74,14 +94,25 @@
       <h2>Rólunk</h2>
       <p>Az online könyvtár egy webalkalmazás, amely lehetővé teszi könyvek keresését, böngészését és kölcsönzését. A rendszer REST API-n keresztül kommunikál a backenddel, JWT-alapú hitelesítést alkalmaz, és PostgreSQL adatbázisban tárolja az adatokat.</p>
     </div>
+
+    <div class="books-view hidden" id="blogView">
+      <div class="section-title">Blog</div>
+      <div class="content-card">
+        <p>Hamarosan...</p>
+      </div>
+    </div>
+
+    <div class="books-view hidden" id="faqView">
+      <div class="section-title">Gyakran ismételt kérdések</div>
+      <div class="content-card">
+        <p>Hamarosan...</p>
+      </div>
+    </div>   
+
   </main>
 
   <aside class="right-panel">
-    <div class="panel-card">
-      <h3><i class="ti ti-clock" aria-hidden="true"></i>Aktív kölcsönzések</h3>
-      <div id="sideLoans"></div>
-    </div>
-    <div class="panel-card">
+    <div class="panel-card" id="linksPanel">
       <h3><i class="ti ti-link" aria-hidden="true"></i>Hasznos linkek</h3>
       <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://developer.mozilla.org" target="_blank">MDN Docs</a></div>
       <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://expressjs.com" target="_blank">Express.js</a></div>
