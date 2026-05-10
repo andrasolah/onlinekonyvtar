@@ -10,10 +10,6 @@
 
 <header>
   <div class="logo">könyv<span>tár</span></div>
-  <div class="search-wrap">
-    <i class="ti ti-search" aria-hidden="true"></i>
-    <input type="text" placeholder="Keresés cím, szerző alapján..." id="searchInput">
-  </div>
   <div class="nav-actions">
     <span id="userGreeting"></span>
     <button class="btn" id="loginBtn" onclick="openModal('loginModal')">Belépés</button>
@@ -81,6 +77,10 @@
     </div>
 
     <div class="books-view hidden" id="booksView">
+    <div class="search-wrap">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input type="text" placeholder="Keresés cím, szerző alapján..." id="searchInput">
+    </div>
       <div class="section-title">Könyvtár <span id="bookCount"></span></div>
       <div class="books-grid" id="mainGrid"></div>
     </div>
