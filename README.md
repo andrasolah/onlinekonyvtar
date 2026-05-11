@@ -35,19 +35,20 @@ Webalkalmazás könyvek böngészésére és kölcsönzésére.
 
 
 ```bash
+1, Docker indítása
+	docker compose down -v && docker compose up --build
 
-cp .env.example .env
+2,Böngészőben
+	http://localhost:3000
+
+3, belépés
+	user1@example.com / password123
+	user2@example.com / password456
+
 
 Az azonnali build lehetőségért a .env most része a repositorynak.
 
-tiszta indítás:
-docker compose down -v && docker compose up --build
-
 ```
-
-
-
-Az alkalmazás elérhető: http://localhost:3000
 
 
 
@@ -137,13 +138,6 @@ tests/             # Jest tesztek
 
 init.sql           # Adatbázis séma és seed adatok
 
-```
-
-\## Teszt felhasználók
-```
--- Teszt felhasználók
--- user1@example.com / password123
--- user2@example.com / password456
 ```
 
 
