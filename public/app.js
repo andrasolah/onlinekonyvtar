@@ -315,3 +315,15 @@ function logout() {
 
 document.getElementById('searchInput').addEventListener('input', renderGrids);
 loadBooks();
+
+['loginEmail', 'loginPass'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+});
+
+['regUser', 'regEmail', 'regPass'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') doRegister();
+  });
+});
