@@ -11,10 +11,10 @@
 <header>
   <div class="logo">könyv<span>tár</span></div>
   <div class="nav-actions">
-    <span id="userGreeting"></span>
+    <span id="userGreeting" class="hidden"></span>
     <button class="btn" id="loginBtn" onclick="openModal('loginModal')">Belépés</button>
     <button class="btn" id="registerBtn" onclick="openModal('registerModal')">Regisztráció</button>
-    <button class="btn btn-primary" id="logoutBtn" style="display:none" onclick="logout()">Kilépés</button>
+    <button class="btn btn-primary hidden" id="logoutBtn" onclick="logout()">Kilépés</button>
   </div>
 </header>
 
@@ -36,7 +36,7 @@
     <i class="ti ti-clock"></i>Kölcsönzéseim
   </div>
 
-  <div style="margin-top:16px"></div>
+  <div class="sidebar-spacer"></div>
   <h3>Információk</h3>
   <div class="sidebar-item" onclick="showView('blog')">
     <i class="ti ti-news"></i>Blog
@@ -46,14 +46,14 @@
   </div>
 </aside>
 
-  <aside class="sidebar" id="booksSidebar" style="display:none">
+  <aside class="sidebar hidden" id="booksSidebar">
     <h3>Kategóriák</h3>
     <div class="sidebar-item cat-item active" onclick="filterCat(this,'all')"><i class="ti ti-books" aria-hidden="true"></i>Összes</div>
     <div class="sidebar-item cat-item" onclick="filterCat(this,'prog')"><i class="ti ti-code" aria-hidden="true"></i>Programozás</div>
     <div class="sidebar-item cat-item" onclick="filterCat(this,'design')"><i class="ti ti-palette" aria-hidden="true"></i>Design</div>
     <div class="sidebar-item cat-item" onclick="filterCat(this,'sci')"><i class="ti ti-microscope" aria-hidden="true"></i>Tudomány</div>
     <div class="sidebar-item cat-item" onclick="filterCat(this,'novel')"><i class="ti ti-feather" aria-hidden="true"></i>Szépirodalom</div>
-    <div style="margin-top:16px"></div>
+    <div class="sidebar-spacer"></div>
     <h3>Elérhetőség</h3>
     <div class="sidebar-item avail-item active" onclick="filterAvail(this,null)"><i class="ti ti-list" aria-hidden="true"></i>Mind</div>
     <div class="sidebar-item avail-item" onclick="filterAvail(this,true)"><i class="ti ti-circle-check" aria-hidden="true"></i>Szabad</div>
@@ -114,9 +114,9 @@
   <aside class="right-panel">
     <div class="panel-card" id="linksPanel">
       <h3><i class="ti ti-link" aria-hidden="true"></i>Hasznos linkek</h3>
-      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://developer.mozilla.org" target="_blank">MDN Docs</a></div>
-      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://expressjs.com" target="_blank">Express.js</a></div>
-      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://orm.drizzle.team" target="_blank">Drizzle ORM</a></div>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://www.gutenberg.org" target="_blank">Project Gutenberg</a></div>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://openlibrary.org" target="_blank">Open Library</a></div>
+      <div class="ext-link"><i class="ti ti-external-link" aria-hidden="true"></i><a href="https://z-library.bz" target="_blank">Z-Library</a></div>
     </div>
   </aside>
 </div>

@@ -78,7 +78,6 @@ header {
 #userGreeting {
   font-size: 13px;
   color: #666;
-  display: none;
 }
 
 /* Buttons */
@@ -427,3 +426,124 @@ nav a:hover { color: #1a1a1a; }
   .hero { flex-direction: column; }
   .hero-img { display: none; }
 }
+
+/* ── Book card ── */
+.book-author { margin-bottom: 6px; }
+
+.book-cover-icon {
+  color: var(--accent-dark);
+  font-size: 32px;
+}
+
+/* Book cover color variants */
+.color-0 { background: #E1F5EE; }
+.color-1 { background: #E6F1FB; }
+.color-2 { background: #FAEEDA; }
+.color-3 { background: #FBEAF0; }
+.color-4 { background: #EAF3DE; }
+
+/* ── Book modal ── */
+.book-modal-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.book-modal-cover {
+  width: 80px;
+  height: 120px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.book-modal-cover-icon {
+  font-size: 36px;
+  color: var(--accent-dark);
+}
+
+.book-modal-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.book-modal-author {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.book-modal-isbn {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.modal-date-label {
+  font-size: 13px;
+  color: #666;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.modal-date-input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 0.5px solid rgba(0,0,0,0.2);
+  border-radius: 8px;
+  font-size: 13px;
+  background: #f5f5f3;
+  color: #1a1a1a;
+}
+
+.modal-info-text {
+  font-size: 13px;
+  color: #666;
+  margin-top: .5rem;
+}
+
+/* ── Loan cards ── */
+.loan-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.loan-card-title {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.loan-card-due {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.btn-return {
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.loans-empty {
+  font-size: 13px;
+  color: #666;
+}
+
+.loans-empty-side {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ── Visibility helpers ── */
+.hidden { display: none !important; }
+.sidebar-spacer { margin-top: 16px; }

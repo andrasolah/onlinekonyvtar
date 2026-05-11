@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createLoan, getMyLoans } from '../controllers/loansController.js';
+import { createLoan, getMyLoans, returnLoan } from '../controllers/loansController.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
 import { body } from 'express-validator';
 
@@ -12,3 +12,4 @@ const loanValidation = [
 
 loansRouter.post('/', requireAuth, loanValidation, createLoan);
 loansRouter.get('/', requireAuth, getMyLoans);
+loansRouter.patch('/:id/return', requireAuth, returnLoan);

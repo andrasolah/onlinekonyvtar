@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS books (
   title VARCHAR(255) NOT NULL,
   author VARCHAR(255) NOT NULL,
   isbn VARCHAR(20) UNIQUE,
+  category VARCHAR(50) DEFAULT 'other',
   available BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT NOW()
 );
@@ -24,11 +25,15 @@ CREATE TABLE IF NOT EXISTS loans (
   returned_at TIMESTAMP
 );
 
--- Seed adat tesztelhetőséghez
-INSERT INTO books (title, author, isbn) VALUES
-  ('Clean Code', 'Robert C. Martin', '9780132350884'),
-  ('The Pragmatic Programmer', 'David Thomas', '9780201616224'),
-  ('Design Patterns', 'Gang of Four', '9780201633610')
+INSERT INTO books (title, author, isbn, category, available) VALUES
+  ('Clean Code',                    'Robert C. Martin',   '9780132350884', 'prog',   TRUE),
+  ('The Pragmatic Programmer',      'David Thomas',       '9780201616224', 'prog',   TRUE),
+  ('Design Patterns',               'Gang of Four',       '9780201633610', 'prog',   TRUE),
+  ('The Design of Everyday Things', 'Don Norman',         '9780465050659', 'design', TRUE),
+  ('A Brief History of Time',       'Stephen Hawking',    '9780553380163', 'sci',    TRUE),
+  ('Sapiens',                       'Yuval Noah Harari',  '9780062316097', 'sci',    TRUE),
+  ('1984',                          'George Orwell',      '9780451524935', 'novel',  TRUE),
+  ('Dune',                          'Frank Herbert',      '9780441013593', 'novel',  TRUE)
 ON CONFLICT DO NOTHING;
 
 -- Teszt felhasználók

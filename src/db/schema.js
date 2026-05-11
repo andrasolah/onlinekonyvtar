@@ -13,6 +13,7 @@ export const books = pgTable('books', {
   title: varchar('title', { length: 255 }).notNull(),
   author: varchar('author', { length: 255 }).notNull(),
   isbn: varchar('isbn', { length: 20 }).unique(),
+  category: varchar('category', { length: 50 }).default('other'),
   available: boolean('available').default(true),
   createdAt: timestamp('created_at').defaultNow()
 });

@@ -111,6 +111,8 @@ Az alkalmazás elérhető: http://localhost:3000
 
 | GET | `/api/loans` | Saját kölcsönzések | Igen |
 
+| PATCH | `/api/loans/:id/return` | Saját kölcsönzés visszadása | Igen |
+
 
 
 \## Projekt struktúra

@@ -1,5 +1,5 @@
 const API = '';
-const COLORS = ['#E1F5EE', '#E6F1FB', '#FAEEDA', '#FBEAF0', '#EAF3DE'];
+const COLORS = ['color-0', 'color-1', 'color-2', 'color-3', 'color-4'];
 const ICONS = ['ti-book', 'ti-book-2', 'ti-books', 'ti-notebook', 'ti-file-text'];
 
 let allBooks = [];
@@ -14,11 +14,11 @@ function bookIcon(id) { return ICONS[id % ICONS.length]; }
 
 function renderBookCard(b) {
   return `<div class="book-card" onclick="openBook(${b.id})">
-    <div class="book-cover" style="background:${bookColor(b.id)}">
-      <i class="ti ${bookIcon(b.id)}" style="color:#0F6E56;font-size:32px" aria-hidden="true"></i>
+    <div class="book-cover ${bookColor(b.id)}">
+      <i class="ti ${bookIcon(b.id)} book-cover-icon" aria-hidden="true"></i>
     </div>
     <h4>${b.title}</h4>
-    <p style="margin-bottom:6px">${b.author}</p>
+    <p class="book-author">${b.author}</p>
     <span class="badge ${b.available ? 'badge-available' : 'badge-unavailable'}">
       ${b.available ? 'Szabad' : 'Kölcsönzött'}
     </span>
@@ -50,7 +50,7 @@ async function loadBooks() {
     const r = await fetch(`${API}/api/books`);
     if (!r.ok) throw new Error();
     const data = await r.json();
-    allBooks = data.map(b => ({ ...b, cat: 'prog' }));
+    allBooks = data.map(b => ({ ...b, cat: b.category ?? 'other' }));
   } catch {
     allBooks = [
       { id: 1, title: 'Clean Code', author: 'Robert C. Martin', isbn: '9780132350884', available: true, cat: 'prog' },
@@ -74,31 +74,31 @@ function openBook(id) {
   const minDate = tomorrow.toISOString().split('T')[0];
 
   document.getElementById('bookModalContent').innerHTML = `
-    <div style="display:flex;gap:1rem;margin-bottom:1rem">
-      <div style="width:80px;height:120px;border-radius:8px;background:${bookColor(b.id)};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="ti ${bookIcon(b.id)}" style="font-size:36px;color:#0F6E56" aria-hidden="true"></i>
+    <div class="book-modal-header">
+      <div class="book-modal-cover ${bookColor(b.id)}">
+        <i class="ti ${bookIcon(b.id)} book-modal-cover-icon" aria-hidden="true"></i>
       </div>
       <div>
-        <h2 style="font-size:18px;font-weight:500;margin-bottom:4px">${b.title}</h2>
-        <p style="font-size:13px;color:#666;margin-bottom:8px">${b.author}</p>
+        <h2 class="book-modal-title">${b.title}</h2>
+        <p class="book-modal-author">${b.author}</p>
         <span class="badge ${b.available ? 'badge-available' : 'badge-unavailable'}">${b.available ? 'Szabad' : 'Kölcsönzött'}</span>
-        <p style="font-size:12px;color:#999;margin-top:8px">ISBN: ${b.isbn}</p>
+        <p class="book-modal-isbn">ISBN: ${b.isbn}</p>
       </div>
     </div>
     ${canLoan
-      ? `<label style="font-size:13px;color:#666;display:block;margin-bottom:4px">Visszahozási határidő</label>
-         <input type="date" id="dueDateInput" min="${minDate}" style="width:100%;padding:7px 10px;border:0.5px solid rgba(0,0,0,0.2);border-radius:8px;font-size:13px;background:#f5f5f3;color:#1a1a1a">
+      ? `<label class="modal-date-label">Visszahozási határidő</label>
+         <input type="date" id="dueDateInput" min="${minDate}" class="modal-date-input">
          <div id="loanError" class="form-error"></div>
          <div class="modal-actions">
            <button class="btn" onclick="closeModal('bookModal')">Mégse</button>
            <button class="btn btn-primary" onclick="doLoan(${b.id})">Kölcsönzés</button>
          </div>`
       : !token
-        ? `<p style="font-size:13px;color:#666;margin-top:.5rem">Kölcsönzéshez be kell jelentkezni.</p>
+        ? `<p class="modal-info-text">Kölcsönzéshez be kell jelentkezni.</p>
            <div class="modal-actions">
              <button class="btn btn-primary" onclick="closeModal('bookModal');openModal('loginModal')">Belépés</button>
            </div>`
-        : `<p style="font-size:13px;color:#666;margin-top:.5rem">Ez a könyv jelenleg nem elérhető.</p>
+        : `<p class="modal-info-text">Ez a könyv jelenleg nem elérhető.</p>
            <div class="modal-actions">
              <button class="btn" onclick="closeModal('bookModal')">Bezárás</button>
            </div>`
@@ -126,38 +126,89 @@ async function doLoan(bookId) {
       errEl.textContent = d.error || 'Hiba történt.';
       return;
     }
+    const created = await r.json();
+    const b = allBooks.find(x => x.id === bookId);
+    b.available = false;
+    loans.push({ id: created.id, bookId, title: b.title, dueDate: due });
+    renderGrids();
+    await loadLoans();
+    closeModal('bookModal');
+    return;
   } catch {
     // fallback: helyi állapot frissítés
   }
   const b = allBooks.find(x => x.id === bookId);
   b.available = false;
-  loans.push({ bookId, title: b.title, dueDate: due });
+  loans.push({ id: -(Date.now()), bookId, title: b.title, dueDate: due });
   renderGrids();
   renderLoans();
-  closeModal('bookModal');
+  closeModal('bookModal'); // fallback: no backend call
 }
 
 function renderLoans() {
   const lv = document.getElementById('loansContent');
   const sl = document.getElementById('sideLoans');
   if (!token) {
-    if (lv) lv.innerHTML = '<p style="font-size:13px;color:#666">Bejelentkezés szükséges.</p>';
-    if (sl) sl.innerHTML = '<span style="font-size:12px;color:#999">Nincs aktív kölcsönzés.</span>';
+    if (lv) lv.innerHTML = '<p class="loans-empty">Bejelentkezés szükséges.</p>';
+    if (sl) sl.innerHTML = '<span class="loans-empty-side">Nincs aktív kölcsönzés.</span>';
     return;
   }
-
   if (loans.length === 0) {
-    if (lv) lv.innerHTML = '<p style="font-size:13px;color:#666">Nincs aktív kölcsönzésed.</p>';
-    if (sl) sl.innerHTML = '<span style="font-size:12px;color:#999">Nincs aktív kölcsönzés.</span>';
+    if (lv) lv.innerHTML = '<p class="loans-empty">Nincs aktív kölcsönzésed.</p>';
+    if (sl) sl.innerHTML = '<span class="loans-empty-side">Nincs aktív kölcsönzés.</span>';
     return;
   }
   if (lv) lv.innerHTML = loans.map(l => `
-    <div style="background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:1rem;margin-bottom:8px">
-      <p style="font-weight:500;font-size:14px">${l.title}</p>
-      <p style="font-size:12px;color:#666;margin-top:4px">Határidő: ${l.dueDate}</p>
+    <div class="loan-card">
+      <div>
+        <p class="loan-card-title">${l.title}</p>
+        <p class="loan-card-due">Határidő: ${l.dueDate}</p>
+      </div>
+      <button class="btn btn-return" onclick="doReturn(${l.id}, ${l.bookId})">Visszaadás</button>
     </div>`).join('');
   if (sl) sl.innerHTML = loans.map(l => `
     <div class="loan-item"><p>${l.title}</p><span>${l.dueDate}</span></div>`).join('');
+}
+
+async function doReturn(loanId, bookId) {
+  try {
+    const r = await fetch(`${API}/api/loans/${loanId}/return`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!r.ok) {
+      const d = await r.json();
+      alert(d.error || 'Hiba történt.');
+      return;
+    }
+  } catch {
+    // fallback: helyi állapot frissítés
+  }
+  loans = loans.filter(l => l.id !== loanId);
+  const b = allBooks.find(x => x.id === bookId);
+  if (b) b.available = true;
+  renderGrids();
+  await loadLoans();
+}
+
+
+async function loadLoans() {
+  if (!token) { renderLoans(); return; }
+  try {
+    const r = await fetch(`${API}/api/loans`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      loans = data.map(l => ({
+        id: l.id,
+        bookId: l.bookId,
+        title: l.title,
+        dueDate: l.dueDate ? l.dueDate.split('T')[0] : ''
+      }));
+    }
+  } catch { /* fallback: meglévő loans tömb marad */ }
+  renderLoans();
 }
 
 function showView(v) {
@@ -168,10 +219,9 @@ function showView(v) {
     a.classList.remove('active');
     if (['home', 'books', 'loans', 'about', 'blog', 'faq'][i] === v) a.classList.add('active');
   });
-  if (v === 'loans') renderLoans();
-
-  document.getElementById('homeSidebar').style.display = ['home', 'loans', 'about', 'blog', 'faq'].includes(v) ? 'block' : 'none';
-  document.getElementById('booksSidebar').style.display = v === 'books' ? 'block' : 'none';
+  if (v === 'loans') { loadLoans(); }
+  document.getElementById('homeSidebar').classList.toggle('hidden', v === 'books');
+  document.getElementById('booksSidebar').classList.toggle('hidden', v !== 'books');
 }
 
 function filterCat(el, cat) {
@@ -215,15 +265,15 @@ async function doLogin() {
     token = 'demo_token';
     currentUser = email.split('@')[0];
   }
-  document.getElementById('userGreeting').textContent = currentUser;
-  document.getElementById('userGreeting').style.display = 'inline';
-  document.getElementById('loginBtn').style.display = 'none';
-  document.getElementById('registerBtn').style.display = 'none';
-  document.getElementById('logoutBtn').style.display = 'inline-block';
   document.getElementById('loginEmail').value = '';
   document.getElementById('loginPass').value = '';
+  document.getElementById('userGreeting').textContent = currentUser;
+  document.getElementById('userGreeting').classList.remove('hidden');
+  document.getElementById('loginBtn').classList.add('hidden');
+  document.getElementById('registerBtn').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.remove('hidden');
   closeModal('loginModal');
-  renderLoans();
+  await loadLoans();
 }
 
 async function doRegister() {
@@ -255,10 +305,10 @@ function logout() {
   token = null;
   currentUser = null;
   loans = [];
-  document.getElementById('userGreeting').style.display = 'none';
-  document.getElementById('loginBtn').style.display = 'inline-block';
-  document.getElementById('registerBtn').style.display = 'inline-block';
-  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('userGreeting').classList.add('hidden');
+  document.getElementById('loginBtn').classList.remove('hidden');
+  document.getElementById('registerBtn').classList.remove('hidden');
+  document.getElementById('logoutBtn').classList.add('hidden');
   loadBooks();
   renderLoans();
 }
