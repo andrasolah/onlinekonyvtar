@@ -68,51 +68,13 @@ Az azonnali build lehetőségért a .env most része a repositorynak.
 
 
 
-\## API végpontok
+## API dokumentációk
 
+```
 
+http://localhost:3000/api-docs
 
-\### Autentikáció
-
-
-
-| Metódus | Útvonal | Leírás | Auth |
-
-|---|---|---|---|
-
-| POST | `/api/auth/register` | Regisztráció | Nem |
-
-| POST | `/api/auth/login` | Bejelentkezés | Nem |
-
-
-
-\### Könyvek
-
-
-
-| Metódus | Útvonal | Leírás | Auth |
-
-|---|---|---|---|
-
-| GET | `/api/books` | Összes könyv listázása | Nem |
-
-| GET | `/api/books/:id` | Könyv részletei | Nem |
-
-
-
-\### Kölcsönzések
-
-
-
-| Metódus | Útvonal | Leírás | Auth |
-
-|---|---|---|---|
-
-| POST | `/api/loans` | Kölcsönzés indítása | Igen |
-
-| GET | `/api/loans` | Saját kölcsönzések | Igen |
-
-| PATCH | `/api/loans/:id/return` | Saját kölcsönzés visszadása | Igen |
+```
 
 
 

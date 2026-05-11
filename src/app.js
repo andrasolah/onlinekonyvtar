@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
 import { booksRouter } from './routes/books.js';
 import { loansRouter } from './routes/loans.js';
 import { authRouter } from './routes/auth.js';
+import { swaggerSpec } from './swagger.js';
 
 const app = express();
 app.use(express.json());
@@ -11,6 +13,7 @@ app.use(express.static('public'));
 app.use('/api/books', booksRouter);
 app.use('/api/loans', loansRouter);
 app.use('/api/auth', authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Globális hibakezelő
 app.use((err, req, res, next) => {
